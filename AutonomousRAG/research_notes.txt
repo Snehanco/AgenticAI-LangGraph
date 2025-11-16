@@ -1,0 +1,78 @@
+LLMs and Transformers — Research Notes
+=====================================
+
+Overview
+- Large Language Models (LLMs) are deep neural networks trained on massive text corpora to model natural language via next-token or masked token prediction.
+- Transformers replaced RNNs/CNNs with attention mechanisms, enabling parallelization and long-range dependencies.
+
+Core Concepts
+- Self-attention: computes pairwise token interactions via queries (Q), keys (K), values (V): Attention(Q,K,V)=softmax(QK^T / sqrt(dk))V.
+- Multi-head attention: parallel attention heads capture different relationships; outputs concatenated then projected.
+- Feed-Forward Network (FFN): per-position MLP with nonlinearity, typically two linear layers with GELU.
+- Residual connections + LayerNorm stabilize deep training.
+- Positional encodings: add sequence position info, either fixed (sinusoidal) or learned embeddings; relative position encodings are common for long contexts.
+
+Architectural Variants
+- Decoder-only (GPT): autoregressive LM for generation and in-context learning.
+- Encoder-only (BERT): bidirectional masked modeling for representation learning and classification.
+- Encoder-Decoder (T5, BART): seq2seq mapping for translation/summarization.
+
+Training Regimes
+- Unsupervised pretraining: MLM (masked language modeling), CLM (causal LM), denoising objectives.
+- Fine-tuning: task-specific supervised training often with task dataset + lower learning rates.
+- In-context learning: few-shot learning by providing examples in prompt without weight updates.
+- RLHF: align model outputs with human preferences using reward model + RL (e.g., PPO).
+
+Scaling & Emergence
+- Scaling laws: predictable improvements with increased model size, data, and compute; compute-optimal configs matter.
+- Emergent capabilities arise at scale: robust reasoning, few-shot tasks, longer context handling.
+- Diminishing returns: data quality, compute efficiency, and fine-tuning strategies become critical beyond scale.
+
+Evaluation & Benchmarks
+- Automatic metrics: perplexity, BLEU, ROUGE, F1, accuracy on benchmarks (GLUE, SuperGLUE, MMLU).
+- Human evaluation: quality, factuality, safety, helpfulness — often needed for generative tasks.
+- Safety benchmarks: toxicity, bias, robustness to adversarial or distribution shift inputs.
+
+Challenges
+- Hallucination: confident but incorrect outputs; hard to detect; research in grounding and retrieval helps.
+- Memorization & privacy: models can inadvertently expose training data.
+- Bias & fairness: dataset biases propagate; need detection and mitigation.
+- Long-context modeling: memory, coherence, retrieval augmented generation (RAG), and sparse attention help scale context length.
+- Environmental and compute costs: training and inference energy and financial costs.
+
+Efficiency & Inference Optimizations
+- Quantization (INT8/4-bit), pruning, distillation (Tiny/Distil variants), activation checkpointing.
+- Efficient attention mechanisms (sparse, linearized), FlashAttention for GPU efficiency.
+- Mixture-of-Experts (MoE) for conditional computation and scaling with less compute per token.
+
+Interpretability & Analysis Methods
+- Attention probing, probing classifiers, neuron/feature attribution, layer-wise behavior, representational similarity analysis.
+- Behavioral evaluation: prompt suites, stress tests, and adversarial probes.
+
+Trends & Future Directions
+- Retrieval augmentation (RAG): combine parametric knowledge with external memory / search.
+- Multimodal models: integrate text, audio, images, video via unified Transformer backbones.
+- Continual and lifelong learning: reduce catastrophic forgetting while updating models.
+- Better alignment: scalable RLHF, constitutional models, human feedback loops.
+- Sparse & modular architectures, better RL/data efficiency, and on-device inference.
+
+Practical tips for experiments
+- Use mixed precision (AMP) and gradient accumulation for large-batch training.
+- Track compute (FLOPs), dataset coverage, and performance vs cost ratio.
+- Sanity-check with small models and unit tests for data pipeline before large-scale runs.
+- Regular evaluations on validation splits and safety tests during training.
+
+Key papers/reading (suggested)
+- "Attention Is All You Need"
+- "Scaling Laws for Neural Language Models"
+- "Language Models are Few-Shot Learners"
+- "Chain of Thought Prompting"
+- "Retrieval-Augmented Generation (RAG)"
+- "Reinforcement Learning from Human Feedback (RLHF)"
+- Survey papers on efficient / sparse Transformers
+
+Notes on reproducibility
+- Log random seeds, tokenizer/version, exact dataset snapshots, config files.
+- Save model checkpoints intermittently, and use deterministic evaluation seeds.
+
+End of notes.
