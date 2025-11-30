@@ -10,6 +10,7 @@ dependencies = [
     "fastembed>=0.7.3",
     "fitz>=0.0.1.dev2",
     "frontend>=0.0.3",
+    "graphdatascience>=1.17",
     "hf-xet>=1.2.0",
     "huggingface>=0.0.1",
     "ipython==8.13.2",
